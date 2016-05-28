@@ -29,6 +29,7 @@ $(document).ready(function() {
 
 	//function for the start button
 	function startGame() {
+		$('#resetButton').hide();
 		$('#startButton').on('click', function() {
 			startButtonClicked = true;
 			displayGame();
@@ -70,9 +71,7 @@ $(document).ready(function() {
 	function displayGame() {
 		//startButtonClicked = true;
 		if (currentQuestionIndex === 10) {
-			console.log(endGame());
-
-			resetGame();
+			endGame();
 		}
 
 		if (startButtonClicked) {
@@ -118,7 +117,7 @@ $(document).ready(function() {
 		showImageAndStats();
 
 		if (currentQuestionIndex === 10) {
-			endGAme();
+			endGame();
 		}
 
 		setTimeout(function () {
@@ -152,6 +151,8 @@ $(document).ready(function() {
 		} else {
 			$('#restartGame').append("<h3>You answered all the questions. Everything is coming up, Milhouse</h3>");
 		}	
+		$('#resetButton').show();
+		resetGameButton();
 	}
 
 	function resetState() {
@@ -159,6 +160,13 @@ $(document).ready(function() {
 		displayGame();
 		resetTimer();
 	
+	}
+
+	function resetGameButton() {
+		$('#resetButton').hide();
+		$('#resetButton').on('click', function() {
+			resetGame();	
+		});
 	}
 
 	function resetGame() {		
