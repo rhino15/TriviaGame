@@ -12,6 +12,10 @@ body {
     background-size: cover;
 }
 
+.answer {
+	background: transparent;
+}
+
 .jumbotron {
 	margin-top: 10%;
 	background: url(../../assets/images/simpsons_characters.jpg) no-repeat center center fixed;

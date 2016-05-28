@@ -25,9 +25,6 @@ $(document).ready(function() {
 	
 
 	startGame();
-	if (currentQuestionIndex === 10) {
-		endGame();
-	}
 
 
 	//function for the start button
@@ -54,7 +51,7 @@ $(document).ready(function() {
 		if (time === 0) {
 			showImageAndStats();
 			stopTimer();
-			$("#unanswered").html("<h3>I'm not a genuis, or are I???</h3>")
+			$("#unanswered").html("<h3>I'm not a genuis, or are I??? You forgot to answer the question...</h3>")
 			numQuestionsUnanswered++;
 			setTimeout(function () {
 				resetState();
@@ -69,13 +66,12 @@ $(document).ready(function() {
 		startTimer()
 	}
 
-
-
 	//display the game functions
 	function displayGame() {
 		//startButtonClicked = true;
 		if (currentQuestionIndex === 10) {
-			endGame();
+			console.log(endGame());
+
 			resetGame();
 		}
 
@@ -96,7 +92,7 @@ $(document).ready(function() {
 		$("#unanswered").empty();
 
 		for (var i = 0; i < setOfChoices.length; i++) {
-			$('#displayAnswerChoices').append("<div class='answerChoice'><h3 id=" + i + ">" + setOfChoices[i] + "</h3></div><br>");
+			$('#displayAnswerChoices').append("<div class='answerChoice'><button class='answer' id=" + i + ">" + setOfChoices[i] + "</button></div><br>");
 			$('#' + i).on('click', function() {
 				stopTimer();
 				var answered = $(this).text();
@@ -116,14 +112,19 @@ $(document).ready(function() {
 			$('#questionCorrect').html("<h3>Okily Dokily, Partner!!! You got it Righterino!!! You guessed " + answers[currentQuestionIndex] +"!</h3>")
 		} else {
 			numQuestionsWrong++;
-			$("#questionWrong").html("<h3>D'oh...You got it wrong...</h3>")
+			$("#questionWrong").html("<h3>D'oh...You got it wrong... The answer was " + answers[currentQuestionIndex] + "...</h3>")
 		}
 	
 		showImageAndStats();
 
+		if (currentQuestionIndex === 10) {
+			endGAme();
+		}
+
 		setTimeout(function () {
 			resetState();
 		}, 5000)
+
 	}
 
 	function showImageAndStats() {
@@ -137,26 +138,20 @@ $(document).ready(function() {
 
 	function endGame() {
 		$('#resetGame').empty();
-		var winningDiv = $('<div class="showResults">');
-		winningDiv.append($('<h3>').html("Okily Dokily! You got " + numQuestionsCorrect + " correct!"));
-		$('#restartGame').append(winningDiv);
+		$("#displayAnswerChoices").empty();
+		$(".simpsonsImages").empty();
+		$("#questionCorrect").empty();
+		$("#questionWrong").empty();
+		$("#unanswered").empty();
 
-		var losingDiv = $('<div class=showResults>');
-		var showLosses = $('<h3>').html("D'oh! You got " + numQuestionsWrong + " wrong!");
-		losingDiv.append(showLosses);
-		$('#restartGame').append(losingDiv);
+		$('#restartGame').append("<h3>Okily Dokily! You got " + numQuestionsCorrect + " correct!</h3>");
+		$('#restartGame').append("<h3>D'oh! You got " + numQuestionsWrong + " wrong!</h3>");
 
-		var questionsUnansweredDiv = $('<div class=showResults>');
 		if (numQuestionsUnanswered > 0) {
-			var showNumUnanswered = $('<h3>').html("You forgot to answer " + numQuestionsUnanswered + " questions...");
-			questionsUnansweredDiv.append(showNumUnanswered);
-			$('#restartGame').append(questionsUnansweredDiv);
+			$('#restartGame').append("<h3>You forgot to answer " + numQuestionsUnanswered + " questions...</h3>");
 		} else {
-			var answeredAll = $('<h3>').html("Good jog, you answered all the questions.  Did you get them all correct?");
-			questionsUnansweredDiv.append(answeredAll);
-			$('#resetGame').append(questionsUnansweredDiv);
-		}
-		
+			$('#restartGame').append("<h3>You answered all the questions. Everything is coming up, Milhouse</h3>");
+		}	
 	}
 
 	function resetState() {
@@ -173,6 +168,6 @@ $(document).ready(function() {
 		numQuestionsUnanswered = 0;
 		displayGame();
 		resetTimer();
-		
+		clearInterval(counter);
 	}
 });
