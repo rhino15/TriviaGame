@@ -69,7 +69,8 @@ $(document).ready(function() {
 
 	//display the game functions
 	function displayGame() {
-		//startButtonClicked = true;
+		$("#restartGame").empty();
+		$("#resetButton").hide();
 		if (currentQuestionIndex === 10) {
 			endGame();
 		}
@@ -116,10 +117,6 @@ $(document).ready(function() {
 	
 		showImageAndStats();
 
-		if (currentQuestionIndex === 10) {
-			endGame();
-		}
-
 		setTimeout(function () {
 			resetState();
 		}, 5000)
@@ -163,7 +160,7 @@ $(document).ready(function() {
 	}
 
 	function resetGameButton() {
-		$('#resetButton').hide();
+		//$('#resetButton').hide();
 		$('#resetButton').on('click', function() {
 			resetGame();	
 		});
@@ -175,7 +172,9 @@ $(document).ready(function() {
 		numQuestionsWrong = 0;
 		numQuestionsUnanswered = 0;
 		displayGame();
-		resetTimer();
+		stopTimer();
 		clearInterval(counter);
+		counter = setInterval(countDown, 1000);
+
 	}
 });
