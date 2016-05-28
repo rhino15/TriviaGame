@@ -7,6 +7,7 @@ $(document).ready(function() {
 	var hasGameEnded = false;
 	var numQuestionsCorrect = 0;
 	var numQuestionsWrong = 0;
+	var numQuestionsUnanswered = 0;
 	var numQuestions = 10;
 	var startButtonClicked = false;
 	var questions = ["Who has tried to kill Bart?", "What was the happiest day of Ralph Wiggum's life?", "Who sold the Monorail to Springfield?", "What is Selma's pet iguana's name?",
@@ -20,7 +21,10 @@ $(document).ready(function() {
 
 	var answers = ["Sideshow Bob", "When Lisa gave him a Valentine's Card", "Lyle Lanley", "Jub Jub", "The Stonecutters", "Florida", "Red", "Mojo", "Nelson", "Shelbyville"];
 
-	var simpsonsImages = []
+	var simpsonsImages = ["assets/images/sideshow_bob.jpg", "assets/images/valentine.jpeg", "assets/images/lyle_lanley.png", "assets/images/jub_jub.jpg", "assets/images/stonecutters.jpeg",
+						"assets/images/florida.jpg", "assets/images/red.jpg", "assets/images/mojo.jpg", "assets/images/nelson.jpg", "assets/images/shelbyville.jpg"];
+	
+
 	startGame();
 
 
@@ -29,11 +33,9 @@ $(document).ready(function() {
 		$('#startButton').on('click', function() {
 			startButtonClicked = true;
 			displayGame();
-			if (!hasGameEnded) {
-				startTimer();
-				$('#startButton').hide();
-			}
-			
+		
+			startTimer();
+			$('#startButton').hide();	
 		});
 	}
 	//helper functions for startbutton
@@ -47,7 +49,13 @@ $(document).ready(function() {
 	}
 	function countDown() {
 		time--;
-		//if time === 0 show next question
+		if (time === 0) {
+			showImage();
+			stopTimer();
+			alert("you did not answer in time....doh.");
+			numQuestionsUnanswered++;
+			resetState();
+		}
 		var countingDownSeconds = time;
 		$('#displayCountDownClock').html("Time remaining: " + countingDownSeconds);
 	}	
@@ -75,6 +83,7 @@ $(document).ready(function() {
 				stopTimer();
 				var answered = $(this).text();
 				var isCorrect = answered === answers[currentQuestionIndex];
+				showImage();
 				showNextQuestion(isCorrect);
 			});
 		}
@@ -90,12 +99,59 @@ $(document).ready(function() {
 			alert("no, you got it wrong..");
 		}
 		currentQuestionIndex++;
-		//counter = setTimeout(showImage(), 4000);
 		displayGame();
 		resetTimer();
+
 	}
 
 	function showImage() {
+		//show the image
+		console.log(simpsonsImages[currentQuestionIndex]);
+		$('.simpsonsImages').html("<img src=" + simpsonsImages[currentQuestionIndex] + ">");
+		numQuestions--;
+		if (numQuestions === 0) {
+			console.log("am i reached?");
+			endGame();
+		}
+	}
 
+	function endGame() {
+		var winningDiv = $('<div class=showResults>');
+		var showWins = $('<h3>').html("Okily Dokily! You got " + numQuestionsCorrect + " correct!");
+		winningDiv.append(showWins);
+
+		var losingDiv = $('<div class=showResults>');
+		var showLosses = $('<h3>').html("D'oh! You got " + numQuestionsWrong + " wrong!");
+		losingDiv.append(showLosses);
+
+		var questionsUnansweredDiv = $('<div class=showResults>');
+		if (numQuestionsUnanswered > 0) {
+			var showNumUnanswered = $('<h3>').html("You forgot to answer " + numQuestionsUnanswered + " questions...");
+			questionsUnansweredDiv.append(showNumUnanswered);
+		} else {
+			var answeredAll = $('<h3>').html("Good jog, you answered all the questions.  Did you get them all correct?");
+			questionsUnansweredDiv.append(answeredAll);
+		}
+		resetGame()
+	}
+
+	function resetState() {
+		currentQuestionIndex++;
+		displayGame();
+		resetTimer();
+	
+	}
+
+	function resetGame() {
+		$('<button>').on("click", function() {
+			var restartGameButton = $('<input type="button" value="Restart Game"/>')
+			$('#restartGame').append(restartGameButton);
+			currentQuestionIndex = 0;
+			numQuestionsCorrect = 0;
+			numQuestionsWrong = 0;
+			numQuestionsUnanswered = 0;
+			displayGame();
+			resetTimer();
+		});
 	}
 });

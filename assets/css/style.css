@@ -1,0 +1,45 @@
+@font-face {
+	font-family: simpsons;
+	src: url('../images/Simpsonfont.ttf') format('truetype');
+}
+
+body {
+	font-family: 'simpsons';
+	background: url(../../assets/images/clouds.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.jumbotron {
+	margin-top: 10%;
+	background: url(../../assets/images/simpsons_characters.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#startButton {
+	background-color: skyblue;
+	color: yellow;
+	font-size: 50px;
+	text-shadow: 6px 6px 12px black;
+}
+
+#gameTitle {
+	color: yellow;
+	font-size: 55px;
+	text-shadow: 6px 6px 12px black;
+}
+
+.styleBackground {
+	background-color: white;
+	text-align: center;
+}
+
+
+.simpsonsImage {
+
+}
