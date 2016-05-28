@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	//variables for app
-	var time = 30;
+	var time = 500;
 	var currentQuestionIndex = 0;
 	var counter = null;
 	var hasGameEnded = false;
@@ -50,7 +50,7 @@ $(document).ready(function() {
 	function countDown() {
 		time--;
 		if (time === 0) {
-			showImage();
+			showImageAndStats();
 			stopTimer();
 			alert("you did not answer in time....doh.");
 			numQuestionsUnanswered++;
@@ -76,14 +76,17 @@ $(document).ready(function() {
 
 	function displayAnswerChoices() {
 		var setOfChoices = answerChoices[currentQuestionIndex];
+
+		if (currentQuestionIndex === 9) {
+			endGame();
+		}
 		$("#displayAnswerChoices").empty();
 		for (var i = 0; i < setOfChoices.length; i++) {
-			$('#displayAnswerChoices').append("<h3 id=" + i + ">" + setOfChoices[i] + "</h3><br>")
+			$('#displayAnswerChoices').append("<div class='answerChoice'><h3 id=" + i + ">" + setOfChoices[i] + "</h3></div><br>");
 			$('#' + i).on('click', function() {
 				stopTimer();
 				var answered = $(this).text();
 				var isCorrect = answered === answers[currentQuestionIndex];
-				showImage();
 				showNextQuestion(isCorrect);
 			});
 		}
@@ -98,21 +101,20 @@ $(document).ready(function() {
 			numQuestionsWrong++;
 			alert("no, you got it wrong..");
 		}
+		showImageAndStats();
 		currentQuestionIndex++;
 		displayGame();
 		resetTimer();
 
 	}
 
-	function showImage() {
+	function showImageAndStats() {
+		$('#displayQuestion').empty();
+		$('#displayAnswerChoices').empty();
 		//show the image
-		console.log(simpsonsImages[currentQuestionIndex]);
+
 		$('.simpsonsImages').html("<img src=" + simpsonsImages[currentQuestionIndex] + ">");
 		numQuestions--;
-		if (numQuestions === 0) {
-			console.log("am i reached?");
-			endGame();
-		}
 	}
 
 	function endGame() {
@@ -150,6 +152,7 @@ $(document).ready(function() {
 			numQuestionsCorrect = 0;
 			numQuestionsWrong = 0;
 			numQuestionsUnanswered = 0;
+			numQuestions = 10;
 			displayGame();
 			resetTimer();
 		});

@@ -35,11 +35,37 @@ body {
 }
 
 .styleBackground {
-	background-color: white;
 	text-align: center;
 }
 
+#displayCountDownClock {
+	font-size: 20px;
+	background-color: yellow;
+	margin-left: 100px;
+	margin-right: 100px;
+}
 
-.simpsonsImage {
+#displayQuestion {
+	background-color: yellow;
+	margin-bottom: 40px;
+	font-size: 20px;
+	background-color: yellow;
+	margin-left: 100px;
+	margin-right: 100px;
+}
 
+.answerChoice {
+	background-color: yellow;
+	padding: 2%;
+	font-size: 20px;
+	background-color: yellow;
+	margin-left: 100px;
+	margin-right: 100px;
+	border-style: solid;
+
+}
+
+
+img {
+	width: 300px;
 }
